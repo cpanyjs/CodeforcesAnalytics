@@ -1,5 +1,7 @@
 # Codeforces Analytics
 
+[![Build Status](https://travis-ci.org/yjl9903/CodeforcesAnalytics.svg?branch=master)](https://travis-ci.org/yjl9903/CodeforcesAnalytics)
+
 ## Install
 
 ```bash
