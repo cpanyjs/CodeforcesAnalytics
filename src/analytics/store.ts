@@ -1,4 +1,4 @@
-import { User } from '../type';
+import { User, OutputUser } from '../type';
 import assert from 'assert';
 
 const store = new Map<string, User>();
@@ -22,22 +22,22 @@ export function insert(name: string, handle: User) {
   }
 }
 
-export function query(): Array<User & { name: string }>;
-export function query(name: string): User;
+export function query(): OutputUser[];
+export function query(name: string): OutputUser;
 
-export function query(name?: string): any {
+export function query(name?: string): OutputUser | OutputUser[] {
   if (typeof name === 'undefined') {
     const arr: Array<any> = [];
     store.forEach((value: User, key: string) => {
-      value.parse();
-      arr.push({ name: key, ...value });
+      arr.push({ name: key, ...value.parse() });
     });
     return arr;
   } else if (typeof name === 'string') {
     assert(store.has(name));
     const tot = store.get(name) as User;
-    tot.parse();
-    return tot;
+    return tot.parse();
+  } else {
+    throw new Error(`typeof name: ${typeof name}`);
   }
 }
 

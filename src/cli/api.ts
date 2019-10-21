@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { DAEMON_URL } from '../config';
-import { User } from '../type';
+import { OutputUser } from '../type';
 
 const api = axios.create({
   baseURL: DAEMON_URL
@@ -33,10 +33,10 @@ export async function insert(name: string, cfid: string, print: boolean) {
   }
 }
 
-export async function query(): Promise<Array<User & { name: string }>>;
-export async function query(name: string): Promise<User>;
+export async function query(): Promise<OutputUser[]>;
+export async function query(name: string): Promise<OutputUser>;
 
-export async function query(name?: string): Promise<any> {
+export async function query(name?: string): Promise<OutputUser[] | OutputUser> {
   if (typeof name === 'undefined') {
     const { data } = await api.get('');
     return data;
@@ -45,6 +45,8 @@ export async function query(name?: string): Promise<any> {
       params: { name }
     });
     return data;
+  } else {
+    throw new Error(`typeof name: ${typeof name}`);
   }
 }
 

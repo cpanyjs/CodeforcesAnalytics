@@ -31,13 +31,33 @@ export class SolvedProblem {
   }
 }
 
-export class User {
+interface BaseUser {
+  cfids: string[];
+  maxRating: number;
+  maxRank: Rank;
+  rating: number;
+  rank: Rank;
+  solved: SolvedProblem[];
+}
+
+export type OutputUser = BaseUser & {
+  contest: string[];
+  vp: string[];
+  practice: string[];
+};
+
+export class User implements BaseUser {
   cfids: string[];
   maxRating: number;
   maxRank: Rank;
   rating: number;
   rank: Rank;
   solved: SolvedProblem[] = [];
+
+  private solvedSet = new Set<string>();
+  contest = new Set<string>();
+  vp = new Set<string>();
+  practice = new Set<string>();
 
   constructor({ handle, maxRating, maxRank, rating, rank }) {
     this.cfids = [handle];
@@ -48,20 +68,33 @@ export class User {
   }
 
   solve(probs: SolvedProblem[]) {
-    const set: Set<string> = new Set(this.solved.map(prob => prob.id));
     for (const prob of probs) {
-      const { id } = prob;
-      if (set.has(id)) continue;
-      set.add(id);
+      const { id, contest, type } = prob;
+      if (type === 'CONTESTANT') this.contest.add(contest);
+      else if (type === 'VIRTUAL') this.vp.add(contest);
+      else if (type === 'PRACTICE') this.practice.add(contest);
+      if (this.solvedSet.has(id)) continue;
+      this.solvedSet.add(id);
       this.solved.push(prob);
     }
   }
 
-  parse() {
+  parse(): OutputUser {
     this.solved.sort((a: SolvedProblem, b: SolvedProblem): number => {
       if (a.time < b.time) return 1;
       else if (a.time > b.time) return 0;
       else return -1;
     });
+    return {
+      cfids: this.cfids,
+      maxRating: this.maxRating,
+      maxRank: this.maxRank,
+      rating: this.rating,
+      rank: this.rank,
+      solved: this.solved,
+      contest: [...this.contest],
+      vp: [...this.vp],
+      practice: [...this.practice]
+    };
   }
 }

@@ -1,3 +1,3 @@
-import { User } from '../type';
+import { OutputUser } from '../type';
 
-export default function generate(info: Array<User & { name: string }>) {}
+export default function generate(info: OutputUser[]) {}
