@@ -60,14 +60,20 @@ import generate from './report';
             const body = data
               .split('\r\n')
               .map(s => s.split(',').map(s => s.trim()));
-            const tasks: Promise<boolean>[] = [];
+            const tasks: Promise<number>[] = [];
+            let count: number = 0;
+            let fail: string[][] = [];
             for (let row of body) {
-              tasks.push(insert(row[0], row[1], false));
+              tasks.push(
+                insert(row[0], row[1], false).then(flag =>
+                  flag ? (count += 1) : fail.push(row)
+                )
+              );
             }
             await Promise.all(tasks);
-            console.log(`"${argv.input}" 插入成功`);
-            console.log(`全部数据输出到 "${argv.output}"`);
+            console.log(`"${argv.input}" 插入成功 (${count}/${body.length})`);
             const res = await query();
+            console.log(`${res.length} 条数据输出到 "${argv.output}"`);
             writeFile(argv.output, JSON.stringify(res), () => {});
           });
         }

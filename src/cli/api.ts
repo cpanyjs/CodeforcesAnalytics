@@ -28,7 +28,7 @@ export async function insert(name: string, cfid: string, print: boolean) {
     }
     return true;
   } catch (err) {
-    console.log(`插入失败`);
+    console.error(`Codeforces ID "${cfid}" 插入失败`);
     return false;
   }
 }
