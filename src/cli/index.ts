@@ -14,8 +14,8 @@ import generate from './report';
       .command(
         ['add <name> <cfid>', '$0'],
         '添加一条 Codeforces ID',
-        yargs => {
-          return yargs.options({
+        yargs =>
+          yargs.options({
             name: {
               type: 'string',
               describe: '你的姓名',
@@ -32,8 +32,7 @@ import generate from './report';
               describe: '打印查询结果',
               default: false
             }
-          });
-        },
+          }),
         argv => {
           insert(argv.name, argv.cfid, argv.print);
         }
@@ -94,8 +93,8 @@ import generate from './report';
       .command(
         ['query [file]', 'q [file]'],
         '查询所有用户信息',
-        yargs => {
-          return yargs.options({
+        yargs =>
+          yargs.options({
             name: {
               alias: 'n',
               type: 'string',
@@ -105,8 +104,7 @@ import generate from './report';
               type: 'string',
               describe: '输出文件名'
             }
-          });
-        },
+          }),
         async argv => {
           const res =
             typeof argv.name === 'undefined'
