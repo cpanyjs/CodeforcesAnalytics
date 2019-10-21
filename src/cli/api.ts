@@ -51,12 +51,17 @@ export async function query(name?: string): Promise<any> {
 
 export async function clear(name?: string) {
   try {
-    await api.delete('', typeof name === 'undefined' ? undefined : {
-      params: {
-        name
-      }
-    });
+    await api.delete(
+      '',
+      typeof name === 'undefined'
+        ? undefined
+        : {
+            params: {
+              name
+            }
+          }
+    );
   } catch (err) {
-    console.log('删除失败');   
+    console.log('删除失败');
   }
 }

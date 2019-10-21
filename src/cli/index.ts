@@ -65,13 +65,14 @@ import { checkDaemon, insert, query, clear } from './api';
       .command(
         'clear [name]',
         '清除姓名为 [name] 的用户信息',
-        yargs => yargs.options({
-          name: {
-            type: 'string',
-            describe: '删除对象姓名',
-            demandOption: true
-          }
-        }),
+        yargs =>
+          yargs.options({
+            name: {
+              type: 'string',
+              describe: '删除对象姓名',
+              demandOption: true
+            }
+          }),
         argv => {
           clear(argv.name);
         }
