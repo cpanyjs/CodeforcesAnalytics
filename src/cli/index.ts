@@ -2,12 +2,12 @@ import { writeFile } from 'fs';
 
 import yargs from 'yargs';
 
-import { checkDaemon, insert, query, clear } from './api';
+import { checkServer, insert, query, clear } from './api';
 import generate from './report';
 
 (async function() {
-  if (!(await checkDaemon())) {
-    console.log('未检测到守护进程的运行');
+  if (!(await checkServer())) {
+    console.log('未检测到服务器进程的运行');
     process.exit(1);
   } else {
     yargs

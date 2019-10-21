@@ -9,7 +9,7 @@ const api = axios.create({
 
 export default api;
 
-export async function checkDaemon() {
+export async function checkServer() {
   try {
     await api.get('');
     return true;
