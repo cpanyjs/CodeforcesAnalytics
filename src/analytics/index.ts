@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     const handle = new User(info);
     handle.solve(await getUserSolved(cfid));
     insert(name, handle);
-    res.send(info);
+    res.send(handle.parse(name));
   } catch (err) {
     res.status(500).send('');
   }
