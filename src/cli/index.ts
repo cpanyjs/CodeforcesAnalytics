@@ -71,6 +71,19 @@ import generate from './report';
               );
             }
             await Promise.all(tasks);
+            while (fail.length !== 0) {
+              tasks.splice(0, tasks.length);
+              let tmp: string[][] = [];
+              for (const row of fail) {
+                tasks.push(
+                  insert(row[0], row[1], false).then(flag =>
+                    flag ? (count += 1) : tmp.push(row)
+                  )
+                );
+              }
+              await Promise.all(tasks);
+              fail = tmp;
+            }
             console.log(`"${argv.input}" 插入成功 (${count}/${body.length})`);
             const res = await query();
             console.log(`${res.length} 条数据输出到 "${argv.output}"`);
