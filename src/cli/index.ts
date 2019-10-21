@@ -101,8 +101,8 @@ import generate from './report';
         }
       )
       .command(
-        ['clear [name]', 'c [name]'],
-        '清除姓名为 [name] 的用户信息',
+        ['clear <name>', 'c <name>'],
+        '清除姓名为 <name> 的用户信息',
         yargs =>
           yargs.options({
             name: {
