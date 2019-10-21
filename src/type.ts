@@ -41,6 +41,7 @@ interface BaseUser {
 }
 
 export type OutputUser = BaseUser & {
+  name: string;
   contest: string[];
   vp: string[];
   practice: string[];
@@ -79,13 +80,14 @@ export class User implements BaseUser {
     }
   }
 
-  parse(): OutputUser {
+  parse(name: string): OutputUser {
     this.solved.sort((a: SolvedProblem, b: SolvedProblem): number => {
       if (a.time < b.time) return 1;
       else if (a.time > b.time) return 0;
       else return -1;
     });
     return {
+      name,
       cfids: this.cfids,
       maxRating: this.maxRating,
       maxRank: this.maxRank,

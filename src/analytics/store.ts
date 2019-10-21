@@ -29,13 +29,13 @@ export function query(name?: string): OutputUser | OutputUser[] {
   if (typeof name === 'undefined') {
     const arr: Array<any> = [];
     store.forEach((value: User, key: string) => {
-      arr.push({ name: key, ...value.parse() });
+      arr.push({ name: key, ...value.parse(key) });
     });
     return arr;
   } else if (typeof name === 'string') {
     assert(store.has(name));
     const tot = store.get(name) as User;
-    return tot.parse();
+    return tot.parse(name);
   } else {
     throw new Error(`typeof name: ${typeof name}`);
   }
