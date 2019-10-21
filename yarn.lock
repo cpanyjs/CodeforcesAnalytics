@@ -34,6 +34,11 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/marked@^0.6.5":
+  version "0.6.5"
+  resolved "https://registry.npm.taobao.org/@types/marked/download/@types/marked-0.6.5.tgz#3cf2a56ef615dad24aaf99784ef90a9eba4e29d8"
+  integrity sha1-PPKlbvYV2tJKr5l4TvkKnrpOKdg=
+
 "@types/mime@*":
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/@types/mime/download/@types/mime-2.0.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fmime%2Fdownload%2F%40types%2Fmime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
@@ -385,6 +390,11 @@ locate-path@^3.0.0:
   dependencies:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
+
+marked@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.npm.taobao.org/marked/download/marked-0.7.0.tgz#b64201f051d271b1edc10a04d1ae9b74bb8e5c0e"
+  integrity sha1-tkIB8FHScbHtwQoE0a6bdLuOXA4=
 
 media-typer@0.3.0:
   version "0.3.0"
