@@ -1,4 +1,4 @@
-import { writeFile } from 'fs';
+import { writeFile, readFile } from 'fs';
 
 import yargs from 'yargs';
 
@@ -29,13 +29,36 @@ import generate from './report';
             print: {
               alias: 'p',
               type: 'boolean',
-              describe: '输出查询结果',
+              describe: '打印查询结果',
               default: false
             }
           });
         },
         argv => {
           insert(argv.name, argv.cfid, argv.print);
+        }
+      )
+      .command(
+        ['csv <file>'],
+        `读取 <file> 文件, 批量添加 Codeforces ID. 文件一行一条记录, 每行格式为(不含括号): <姓名>,<ID>`,
+        yargs =>
+          yargs.options({
+            file: {
+              type: 'string',
+              describe: '输入文件',
+              demandOption: true
+            }
+          }),
+        argv => {
+          readFile(argv.file, 'utf8', (err, data) => {
+            if (err) throw err;
+            const body = data
+              .split('\r\n')
+              .map(s => s.split(',').map(s => s.trim()));
+            for (let row of body) {
+              insert(row[0], row[1], false);
+            }
+          });
         }
       )
       .command(
