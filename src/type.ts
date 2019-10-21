@@ -10,15 +10,24 @@ export type Rank =
   | 'pupil'
   | 'newbie';
 
+export type ParticipantType =
+  | 'CONTESTANT'
+  | 'PRACTICE'
+  | 'VIRTUAL'
+  | 'MANAGER'
+  | 'OUT_OF_COMPETITION';
+
 export class SolvedProblem {
   contest: string;
   id: string;
   time: Date;
+  type: ParticipantType;
 
-  constructor(cont: string, prob: string, time: number) {
+  constructor(cont: string, prob: string, time: number, tp: string) {
     this.contest = cont;
     this.id = cont + prob;
     this.time = new Date(time * 1000);
+    this.type = tp as ParticipantType;
   }
 }
 

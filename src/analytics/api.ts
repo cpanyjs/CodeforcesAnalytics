@@ -53,7 +53,8 @@ export async function getUserSolved(cfid: string): Promise<SolvedProblem[]> {
         const tot = new SolvedProblem(
           sub.contestId,
           sub.problem.index,
-          sub.creationTimeSeconds
+          sub.creationTimeSeconds,
+          sub.author.participantType
         );
         if (tot.time < FROM_DATE) {
           flag = false;
