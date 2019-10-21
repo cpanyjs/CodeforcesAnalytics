@@ -1,7 +1,7 @@
 import { writeFile } from 'fs';
 
 import yargs from 'yargs';
-import { checkDaemon, insert, query } from './api';
+import { checkDaemon, insert, query, clear } from './api';
 
 (async function() {
   if (!(await checkDaemon())) {
@@ -23,11 +23,16 @@ import { checkDaemon, insert, query } from './api';
               type: 'string',
               describe: '你的 Codeforces ID',
               demandOption: true
+            },
+            print: {
+              type: 'boolean',
+              describe: '输出查询结果',
+              default: false
             }
           });
         },
         argv => {
-          insert(argv.name, argv.cfid);
+          insert(argv.name, argv.cfid, argv.print);
         }
       )
       .command(
@@ -51,10 +56,24 @@ import { checkDaemon, insert, query } from './api';
               ? await query()
               : await query(argv.name as string);
           if (typeof argv.file === 'undefined') {
-            console.log(res);
+            console.log(JSON.stringify(res, null, 2));
           } else {
             writeFile(argv.file, JSON.stringify(res), () => {});
           }
+        }
+      )
+      .command(
+        'clear [name]',
+        '清除姓名为 [name] 的用户信息',
+        yargs => yargs.options({
+          name: {
+            type: 'string',
+            describe: '删除对象姓名',
+            demandOption: true
+          }
+        }),
+        argv => {
+          clear(argv.name);
         }
       )
       .help().argv;

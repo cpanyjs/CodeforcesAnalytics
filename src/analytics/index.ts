@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { getUserInfo } from './api';
 import { User } from '../type';
-import { insert, query } from './store';
+import { insert, query, clear } from './store';
 
 const router = Router();
 
@@ -27,6 +27,15 @@ router.post('/', async (req, res) => {
     res.send(info);
   } catch (err) {
     res.status(500).send('');
+  }
+});
+
+router.delete('/', (req, res) => {
+  if ('name' in req.query) {
+    clear(req.query.name);
+    res.send('');
+  } else {
+    res.status(400).send('');
   }
 });
 

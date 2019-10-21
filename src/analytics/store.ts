@@ -36,3 +36,13 @@ export function query(name?: string): any {
     return store.get(name);
   }
 }
+
+export function clear(name?: string) {
+  if (typeof name === 'undefined') {
+    store.clear();
+  } else {
+    if (store.has(name)) {
+      store.delete(name);
+    }
+  }
+}

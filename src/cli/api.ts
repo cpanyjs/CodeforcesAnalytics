@@ -19,11 +19,14 @@ export async function checkDaemon() {
   }
 }
 
-export async function insert(name: string, cfid: string) {
+export async function insert(name: string, cfid: string, print: boolean) {
   console.log(`开始查询 "${cfid}" ...`);
   try {
-    await api.post('', { name, cfid });
+    const { data } = await api.post('', { name, cfid });
     console.log(`${name}的 Codeforces ID "${cfid}" 插入成功`);
+    if (print) {
+      console.log(JSON.stringify(data, null, 2));
+    }
     return true;
   } catch (err) {
     console.log(`插入失败`);
@@ -43,5 +46,17 @@ export async function query(name?: string): Promise<any> {
       params: { name }
     });
     return data;
+  }
+}
+
+export async function clear(name?: string) {
+  try {
+    await api.delete('', typeof name === 'undefined' ? undefined : {
+      params: {
+        name
+      }
+    });
+  } catch (err) {
+    console.log('删除失败');   
   }
 }
