@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { getUserInfo } from './api';
+import { getUserInfo, clearCache, getUserSolved } from './api';
 import { User } from '../type';
 import { insert, query, clear } from './store';
 
@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
   try {
     const info = await getUserInfo(cfid);
     const handle = new User(info);
+    handle.solve(await getUserSolved(cfid));
     insert(name, handle);
     res.send(info);
   } catch (err) {
@@ -32,6 +33,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/', (req, res) => {
   if ('name' in req.query) {
+    query(req.query.name).cfids.forEach(id => clearCache(id));
     clear(req.query.name);
     res.send('');
   } else {

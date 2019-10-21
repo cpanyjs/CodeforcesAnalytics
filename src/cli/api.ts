@@ -4,8 +4,7 @@ import { DAEMON_URL } from '../config';
 import { User } from '../type';
 
 const api = axios.create({
-  baseURL: DAEMON_URL,
-  timeout: 60 * 1000
+  baseURL: DAEMON_URL
 });
 
 export default api;

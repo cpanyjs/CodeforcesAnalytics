@@ -15,6 +15,7 @@ export function insert(name: string, handle: User) {
       handle.rank = old.rank;
     }
     handle.cfids = [...new Set([...old.cfids, ...handle.cfids])];
+    handle.solve(old.solved);
     store.set(name, handle);
   } else {
     store.set(name, handle);
@@ -28,12 +29,15 @@ export function query(name?: string): any {
   if (typeof name === 'undefined') {
     const arr: Array<any> = [];
     store.forEach((value: User, key: string) => {
+      value.parse();
       arr.push({ name: key, ...value });
     });
     return arr;
   } else if (typeof name === 'string') {
     assert(store.has(name));
-    return store.get(name);
+    const tot = store.get(name) as User;
+    tot.parse();
+    return tot;
   }
 }
 

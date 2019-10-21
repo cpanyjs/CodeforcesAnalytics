@@ -10,10 +10,17 @@ export type Rank =
   | 'pupil'
   | 'newbie';
 
-export type SolvedProblem = {
+export class SolvedProblem {
+  contest: string;
   id: string;
   time: Date;
-};
+
+  constructor(cont: string, prob: string, time: number) {
+    this.contest = cont;
+    this.id = cont + prob;
+    this.time = new Date(time * 1000);
+  }
+}
 
 export class User {
   cfids: string[];
@@ -23,8 +30,6 @@ export class User {
   rank: Rank;
   solved: SolvedProblem[] = [];
 
-  private solvedSet = new Set<string>();
-
   constructor({ handle, maxRating, maxRank, rating, rank }) {
     this.cfids = [handle];
     this.maxRating = maxRating;
@@ -33,13 +38,21 @@ export class User {
     this.rank = rank;
   }
 
-  solve(id: string, time: string): boolean {
-    if (this.solvedSet.has(id)) return false;
-    this.solvedSet.add(id);
-    this.solved.push({
-      id,
-      time: new Date(time)
+  solve(probs: SolvedProblem[]) {
+    const set: Set<string> = new Set(this.solved.map(prob => prob.id));
+    for (const prob of probs) {
+      const { id } = prob;
+      if (set.has(id)) continue;
+      set.add(id);
+      this.solved.push(prob);
+    }
+  }
+
+  parse() {
+    this.solved.sort((a: SolvedProblem, b: SolvedProblem): number => {
+      if (a.time < b.time) return 1;
+      else if (a.time > b.time) return 0;
+      else return -1;
     });
-    return true;
   }
 }
