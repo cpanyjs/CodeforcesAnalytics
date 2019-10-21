@@ -39,25 +39,36 @@ import generate from './report';
         }
       )
       .command(
-        ['csv <file>'],
-        `读取 <file> 文件, 批量添加 Codeforces ID. 文件一行一条记录, 每行格式为(不含括号): <姓名>,<ID>`,
+        ['csv <input> [output]'],
+        `读取 <input> 文件, 批量添加 Codeforces ID. 文件一行一条记录, 每行格式为(不含括号): <姓名>,<ID>`,
         yargs =>
           yargs.options({
-            file: {
+            input: {
               type: 'string',
               describe: '输入文件',
               demandOption: true
+            },
+            output: {
+              type: 'string',
+              describe: '输出文件',
+              default: 'out.json'
             }
           }),
         argv => {
-          readFile(argv.file, 'utf8', (err, data) => {
+          readFile(argv.input, 'utf8', async (err, data) => {
             if (err) throw err;
             const body = data
               .split('\r\n')
               .map(s => s.split(',').map(s => s.trim()));
+            const tasks: Promise<boolean>[] = [];
             for (let row of body) {
-              insert(row[0], row[1], false);
+              tasks.push(insert(row[0], row[1], false));
             }
+            await Promise.all(tasks);
+            console.log(`"${argv.input}" 插入成功`);
+            console.log(`全部数据输出到 "${argv.output}"`);
+            const res = await query();
+            writeFile(argv.output, JSON.stringify(res), () => {});
           });
         }
       )
