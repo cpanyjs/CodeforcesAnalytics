@@ -1,6 +1,7 @@
 import { writeFile, readFile } from 'fs';
 
 import yargs from 'yargs';
+import axios from 'axios';
 
 import { checkServer, insert, query, clear } from './api';
 import generate from './report';
@@ -69,7 +70,7 @@ import generate from './report';
                 )
               );
             }
-            await Promise.all(tasks);
+            await axios.all(tasks);
             while (fail.length !== 0) {
               tasks.splice(0, tasks.length);
               let tmp: string[][] = [];
@@ -80,7 +81,7 @@ import generate from './report';
                   )
                 );
               }
-              await Promise.all(tasks);
+              await axios.all(tasks);
               fail = tmp;
             }
             console.log(`"${argv.input}" 插入成功 (${count}/${body.length})`);

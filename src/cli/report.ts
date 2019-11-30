@@ -4,7 +4,7 @@ import marked from 'marked';
 
 import { OutputUser } from '../type';
 import { rating2color } from '../util';
-import { TITLE } from '../config';
+import { TITLE, FROM_DATE } from '../config';
 
 let data: OutputUser[] = [];
 
@@ -138,7 +138,8 @@ const tables = [
 export default function generate(info: OutputUser[]) {
   data = info;
   const md =
-    `# ${TITLE} Codeforces 统计\n\n` + tables.map(fn => fn() + '\n').join('\n');
+    `# ${TITLE} Codeforces 统计\n\n` + tables.map(fn => fn() + '\n').join('\n')
+    + `\n统计自 ${FROM_DATE.getFullYear()} 年 ${FROM_DATE.getMonth() + 1} 月 ${FROM_DATE.getDate()} 日`
 
   return `<!DOCTYPE html>
 <html lang="en">
